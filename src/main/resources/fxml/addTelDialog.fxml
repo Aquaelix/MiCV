@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="view" alignment="CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints minWidth="10.0" />
+    <ColumnConstraints minWidth="10.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" />
+    <RowConstraints minHeight="10.0" />
+  </rowConstraints>
+   <children>
+      <Label text="Número" />
+      <Label text="Tipo" GridPane.rowIndex="1" />
+      <ComboBox fx:id="tipoCombo" prefWidth="150.0" promptText="Seleccione un tipo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <TextField fx:id="numText" maxWidth="180.0" GridPane.columnIndex="1" />
+   </children>
+</GridPane>

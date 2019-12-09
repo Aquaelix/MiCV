@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<GridPane fx:id="view" alignment="CENTER" hgap="5.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="175.0" prefWidth="300.0" vgap="5.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <columnConstraints>
+    <ColumnConstraints minWidth="10.0" />
+    <ColumnConstraints minWidth="10.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints minHeight="10.0" />
+    <RowConstraints minHeight="10.0" />
+      <RowConstraints minHeight="10.0" />
+      <RowConstraints minHeight="10.0" />
+  </rowConstraints>
+   <children>
+      <Label text="Denominación" />
+      <Label text="Organizador" GridPane.rowIndex="1" />
+      <TextField fx:id="denText" maxWidth="180.0" GridPane.columnIndex="1" />
+      <Label text="Desde" GridPane.rowIndex="2" />
+      <Label text="Hasta" GridPane.rowIndex="3" />
+      <DatePicker fx:id="desdePicker" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <DatePicker fx:id="hastaPicker" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="orgText" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</GridPane>
