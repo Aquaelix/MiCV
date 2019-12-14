@@ -1,5 +1,7 @@
 package dad.javafx.mvc.model;
 
+import javax.xml.bind.annotation.XmlAttribute;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -15,6 +17,7 @@ public class Telefono {
 		return this.tipo;
 	}
 
+	@XmlAttribute
 	public final TipoTelefono getTipo() {
 		return this.tipoProperty().get();
 	}
@@ -27,6 +30,7 @@ public class Telefono {
 		return this.numero;
 	}
 
+	@XmlAttribute
 	public final String getNumero() {
 		return this.numeroProperty().get();
 	}

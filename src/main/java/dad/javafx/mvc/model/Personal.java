@@ -2,6 +2,12 @@ package dad.javafx.mvc.model;
 
 import java.time.LocalDate;
 
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+
+import dad.javafx.mvc.persistencia.LocalDateAdapter;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleListProperty;
@@ -13,37 +19,36 @@ import javafx.collections.ObservableList;
 
 public class Personal {
 
-	private StringProperty identificacion = new SimpleStringProperty();
+	private StringProperty identificacion;
+	private ObjectProperty<Nacionalidad> nacionalidad;
+	private ListProperty<Nacionalidad> nacionalidadListView;
+	private StringProperty nombre;
+	private StringProperty apellidos;
+	private ObjectProperty<LocalDate> fechaNacimiento;
+	private StringProperty direccion;
+	private StringProperty codigoPostal;
+	private StringProperty localidad;
+	private StringProperty pais;
 
-	private ObjectProperty<Nacionalidad> nacionalidad = new SimpleObjectProperty<Nacionalidad>();
-
-	private ListProperty<Nacionalidad> nacionalidadListView = new SimpleListProperty<Nacionalidad>(this,
-			"nacionalidadListView", FXCollections.observableArrayList());
-
-	private StringProperty nombre = new SimpleStringProperty();
-
-	private StringProperty apellidos = new SimpleStringProperty();
-
-	private ObjectProperty<LocalDate> fechaNacimiento = new SimpleObjectProperty<LocalDate>();
-
-	private StringProperty direccion = new SimpleStringProperty();
-
-	private StringProperty codigoPostal = new SimpleStringProperty();
-
-	private StringProperty localidad = new SimpleStringProperty();
-
-	private StringProperty pais = new SimpleStringProperty();
-
-	private ListProperty<String> paisList = new SimpleListProperty<String>(this, "paisList",
-			FXCollections.observableArrayList());
-
-	private ListProperty<Nacionalidad> nacionalidadList = new SimpleListProperty<Nacionalidad>(this, "nacionalidadList",
-			FXCollections.observableArrayList());
+	public Personal() {
+		identificacion = new SimpleStringProperty();
+		nacionalidad = new SimpleObjectProperty<Nacionalidad>();
+		nacionalidadListView = new SimpleListProperty<Nacionalidad>(this, "nacionalidadListView",
+				FXCollections.observableArrayList());
+		nombre = new SimpleStringProperty();
+		apellidos = new SimpleStringProperty();
+		fechaNacimiento = new SimpleObjectProperty<LocalDate>();
+		direccion = new SimpleStringProperty();
+		codigoPostal = new SimpleStringProperty();
+		localidad = new SimpleStringProperty();
+		pais = new SimpleStringProperty();
+	}
 
 	public final StringProperty identificacionProperty() {
 		return this.identificacion;
 	}
-
+	
+	@XmlAttribute
 	public final String getIdentificacion() {
 		return this.identificacionProperty().get();
 	}
@@ -92,6 +97,7 @@ public class Personal {
 		return this.fechaNacimiento;
 	}
 
+	@XmlJavaTypeAdapter(LocalDateAdapter.class)
 	public final LocalDate getFechaNacimiento() {
 		return this.fechaNacimientoProperty().get();
 	}
@@ -148,34 +154,12 @@ public class Personal {
 		this.paisProperty().set(pais);
 	}
 
-	public final ListProperty<String> paisListProperty() {
-		return this.paisList;
-	}
-
-	public final ObservableList<String> getPaisList() {
-		return this.paisListProperty().get();
-	}
-
-	public final void setPaisList(final ObservableList<String> paisList) {
-		this.paisListProperty().set(paisList);
-	}
-
-	public final ListProperty<Nacionalidad> nacionalidadListProperty() {
-		return this.nacionalidadList;
-	}
-
-	public final ObservableList<Nacionalidad> getNacionalidadList() {
-		return this.nacionalidadListProperty().get();
-	}
-
-	public final void setNacionalidadList(final ObservableList<Nacionalidad> nacionalidadList) {
-		this.nacionalidadListProperty().set(nacionalidadList);
-	}
-
 	public final ListProperty<Nacionalidad> nacionalidadListViewProperty() {
 		return this.nacionalidadListView;
 	}
-
+	
+	@XmlElementWrapper(name="nacionalidades")
+	@XmlElement(name = "nacionalidad")
 	public final ObservableList<Nacionalidad> getNacionalidadListView() {
 		return this.nacionalidadListViewProperty().get();
 	}

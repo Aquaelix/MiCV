@@ -41,7 +41,7 @@ public class ConocimientoDialogController implements Initializable {
 	@FXML
 	private Button limpiaButton;
 
-	private Idioma model = new Idioma();
+	private Idioma model;
 
 	public ConocimientoDialogController() {
 
@@ -57,6 +57,8 @@ public class ConocimientoDialogController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		model = new Idioma();
+				
 		Bindings.bindBidirectional(denominacionText.textProperty(), model.denominacionProperty());
 		model.nivelProperty().bind(nivelCombo.getSelectionModel().selectedItemProperty());
 		nivelCombo.getItems().setAll(Nivel.values());

@@ -5,7 +5,7 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-import dad.javafx.mvc.model.Contacto;
+import dad.javafx.mvc.RootController;
 import dad.javafx.mvc.model.Email;
 import dad.javafx.mvc.model.Telefono;
 import dad.javafx.mvc.model.TipoTelefono;
@@ -16,6 +16,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
@@ -24,13 +25,10 @@ import javafx.scene.control.SplitPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 
 public class ContactoController implements Initializable {
-
-	private Contacto model = new Contacto();
 
 	@FXML
 	private SplitPane view;
@@ -86,7 +84,7 @@ public class ContactoController implements Initializable {
 		if (result.isPresent()) {
 			Email aux = new Email();
 			aux.setDireccion(result.get());
-			model.getEmails().add(aux);
+			RootController.getModel().getContacto().getEmails().add(aux);
 		}
 
 	}
@@ -110,7 +108,7 @@ public class ContactoController implements Initializable {
 		Optional<ButtonType> result = dialog.showAndWait();
 
 		if (result.get() == okButton) {
-			model.getTelefonos().add(telefonoView.getModel());
+			RootController.getModel().getContacto().getTelefonos().add(telefonoView.getModel());
 		}
 
 	}
@@ -127,7 +125,7 @@ public class ContactoController implements Initializable {
 		if (result.isPresent()) {
 			Web aux = new Web();
 			aux.setUrl(result.get());
-			model.getWebs().add(aux);
+			RootController.getModel().getContacto().getWebs().add(aux);
 		}
 
 	}
@@ -142,10 +140,10 @@ public class ContactoController implements Initializable {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			if (model.getEmail() != null) {
-				model.getEmails().remove(model.getEmail());
-			} else if (model.getEmails().size() != 0) {
-				model.getEmails().remove(model.getEmails().size() - 1);
+			if (RootController.getModel().getContacto().getEmail() != null) {
+				RootController.getModel().getContacto().getEmails().remove(RootController.getModel().getContacto().getEmail());
+			} else if (RootController.getModel().getContacto().getEmails().size() != 0) {
+				RootController.getModel().getContacto().getEmails().remove(RootController.getModel().getContacto().getEmails().size() - 1);
 			}
 			mailTable.getSelectionModel().clearSelection();
 		}
@@ -162,10 +160,10 @@ public class ContactoController implements Initializable {
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			if (model.getTelefono() != null) {
-				model.getTelefonos().remove(model.getTelefono());
-			} else if (model.getTelefonos().size() != 0) {
-				model.getTelefonos().remove(model.getTelefonos().size() - 1);
+			if (RootController.getModel().getContacto().getTelefono() != null) {
+				RootController.getModel().getContacto().getTelefonos().remove(RootController.getModel().getContacto().getTelefono());
+			} else if (RootController.getModel().getContacto().getTelefonos().size() != 0) {
+				RootController.getModel().getContacto().getTelefonos().remove(RootController.getModel().getContacto().getTelefonos().size() - 1);
 			}
 			telefonosTable.getSelectionModel().clearSelection();
 		}
@@ -183,10 +181,10 @@ public class ContactoController implements Initializable {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 
-			if (model.getWebs() != null) {
-				model.getWebs().remove(model.getWeb());
-			} else if (model.getWebs().size() != 0) {
-				model.getWebs().remove(model.getWebs().size() - 1);
+			if (RootController.getModel().getContacto().getWebs() != null) {
+				RootController.getModel().getContacto().getWebs().remove(RootController.getModel().getContacto().getWeb());
+			} else if (RootController.getModel().getContacto().getWebs().size() != 0) {
+				RootController.getModel().getContacto().getWebs().remove(RootController.getModel().getContacto().getWebs().size() - 1);
 			}
 			URLTable.getSelectionModel().clearSelection();
 		}
@@ -196,14 +194,13 @@ public class ContactoController implements Initializable {
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
 
-		model.emailProperty().bind(mailTable.getSelectionModel().selectedItemProperty());
-		model.telefonoProperty().bind(telefonosTable.getSelectionModel().selectedItemProperty());
-		model.webProperty().bind(URLTable.getSelectionModel().selectedItemProperty());
+		RootController.getModel().getContacto().emailProperty().bind(mailTable.getSelectionModel().selectedItemProperty());
+		RootController.getModel().getContacto().telefonoProperty().bind(telefonosTable.getSelectionModel().selectedItemProperty());
+		RootController.getModel().getContacto().webProperty().bind(URLTable.getSelectionModel().selectedItemProperty());
 
-		
-		model.emailsProperty().bindBidirectional(mailTable.itemsProperty());
-		model.telefonosProperty().bindBidirectional(telefonosTable.itemsProperty());
-		model.websProperty().bindBidirectional(URLTable.itemsProperty());
+		RootController.getModel().getContacto().emailsProperty().bindBidirectional(mailTable.itemsProperty());
+		RootController.getModel().getContacto().telefonosProperty().bindBidirectional(telefonosTable.itemsProperty());
+		RootController.getModel().getContacto().websProperty().bindBidirectional(URLTable.itemsProperty());
 
 /*		mailTable.itemsProperty().bind(model.emailsProperty());
 		telefonosTable.itemsProperty().bind(model.telefonosProperty());
@@ -229,10 +226,6 @@ public class ContactoController implements Initializable {
 
 	public SplitPane getView() {
 		return view;
-	}
-
-	public Contacto getModel() {
-		return model;
 	}
 	
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cv>
+    <contacto>
+        <emails>
+            <emails>
+                <direccion>SFGH</direccion>
+            </emails>
+            <emails>
+                <direccion>sfghjk</direccion>
+            </emails>
+        </emails>
+        <telefonos/>
+        <webs/>
+    </contacto>
+    <experiencias/>
+    <formacion/>
+    <habilidades/>
+    <personal>
+        <apellidos></apellidos>
+        <codigoPostal></codigoPostal>
+        <direccion></direccion>
+        <identificacion></identificacion>
+        <localidad></localidad>
+        <nacionalidades/>
+        <nombre></nombre>
+    </personal>
+</cv>

@@ -1,3 +1,3 @@
-#javaFXTemplate
+#MiCV
 
-Plantilla de creación de proyectos **JavaFX** con Maven.
+Proyecto MiCV **JavaFX** con Maven.

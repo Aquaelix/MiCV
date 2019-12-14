@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<cv>
+    <contacto/>
+    <experiencias desde="2019-12-10" hasta="2020-01-01">
+        <denominacion>fqe</denominacion>
+        <empleador>fqe</empleador>
+    </experiencias>
+    <formacion desde="2019-12-02" hasta="2019-12-24">
+        <denominacion>gveq</denominacion>
+        <organizador>gqe</organizador>
+    </formacion>
+    <habilidades denominacion="vrbh" nivel="MEDIO"/>
+    <habilidades certificacion="egveqg" denominacion="qevg" nivel="MEDIO"/>
+    <personal identificacion="">
+        <apellidos></apellidos>
+        <codigoPostal></codigoPostal>
+        <direccion></direccion>
+        <localidad></localidad>
+        <nacionalidades/>
+        <nombre></nombre>
+    </personal>
+</cv>

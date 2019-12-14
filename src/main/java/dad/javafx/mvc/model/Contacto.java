@@ -9,13 +9,15 @@ import javafx.collections.ObservableList;
 
 public class Contacto {
 
-	private ListProperty<Web> webs = new SimpleListProperty<Web>(this, "webs", FXCollections.observableArrayList());
+	private ListProperty<Web> webs;
+	private ListProperty<Email> emails;
+	private ListProperty<Telefono> telefonos;
 
-	private ListProperty<Email> emails = new SimpleListProperty<Email>(this, "emails",
-			FXCollections.observableArrayList());
-
-	private ListProperty<Telefono> telefonos = new SimpleListProperty<Telefono>(this, "telefonos",
-			FXCollections.observableArrayList());
+	public Contacto() {
+		webs = new SimpleListProperty<Web>(this, "webs", FXCollections.observableArrayList());
+		emails = new SimpleListProperty<Email>(this, "emails", FXCollections.observableArrayList());
+		telefonos = new SimpleListProperty<Telefono>(this, "telefonos", FXCollections.observableArrayList());
+	}
 
 	private ObjectProperty<Email> email = new SimpleObjectProperty<Email>();
 	private ObjectProperty<Web> web = new SimpleObjectProperty<Web>();

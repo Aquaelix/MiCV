@@ -5,27 +5,26 @@ import java.net.URL;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import dad.javafx.mvc.RootController;
 import dad.javafx.mvc.model.Conocimiento;
+import dad.javafx.mvc.model.Idioma;
 import dad.javafx.mvc.model.Nivel;
 import dad.javafx.mvc.model.dialog.ConocimientoDialogController;
 import dad.javafx.mvc.model.dialog.IdiomaDialogController;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
@@ -33,21 +32,19 @@ import javafx.scene.layout.HBox;
 public class ConocimientosController implements Initializable {
 
 	// model
-	private ObjectProperty<Conocimiento> seleccionado = new SimpleObjectProperty<Conocimiento>();
-
-	private ListProperty<Conocimiento> conocimientos = new SimpleListProperty<Conocimiento>();
+	private ObjectProperty<Idioma> seleccionado = new SimpleObjectProperty<Idioma>();
 
 	@FXML
 	private HBox view;
 
 	@FXML
-	private TableView<Conocimiento> conocimientosTable;
+	private TableView<Idioma> conocimientosTable;
 
 	@FXML
-	private TableColumn<Conocimiento, String> denominacionColumn;
+	private TableColumn<Idioma, String> denominacionColumn;
 
 	@FXML
-	private TableColumn<Conocimiento, Nivel> nivelColumn;
+	private TableColumn<Idioma, Nivel> nivelColumn;
 
 	@FXML
 	private Button addConocimientoButton;
@@ -73,7 +70,7 @@ public class ConocimientosController implements Initializable {
 		
 		Optional<ButtonType> result = dialog.showAndWait();
 		if (result.get() == okButton) {
-			getConocimientos().add(conocimientoView.getModel());
+			RootController.getModel().habilidadesProperty().add(conocimientoView.getModel());
 		}
 	}
 
@@ -91,7 +88,7 @@ public class ConocimientosController implements Initializable {
 		
 		Optional<ButtonType> result = dialog.showAndWait();
 		if (result.get() == okButton) {
-			getConocimientos().add(idiomaView.getModel());
+			RootController.getModel().habilidadesProperty().add(idiomaView.getModel());
 		}
 	}
 
@@ -106,9 +103,9 @@ public class ConocimientosController implements Initializable {
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			if (getSeleccionado() != null) {
-				getConocimientos().remove(getSeleccionado());
-			} else if (getConocimientos().size() != 0) {
-				getConocimientos().remove(getConocimientos().size() - 1);
+				RootController.getModel().getHabilidades().remove(getSeleccionado());
+			} else if (RootController.getModel().getHabilidades().size() != 0) {
+				RootController.getModel().getHabilidades().remove(RootController.getModel().getHabilidades().size() - 1);
 			}
 			conocimientosTable.getSelectionModel().clearSelection();
 		}
@@ -116,10 +113,9 @@ public class ConocimientosController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-
 		seleccionadoProperty().bind(conocimientosTable.getSelectionModel().selectedItemProperty());
 
-		conocimientosProperty().bindBidirectional(conocimientosTable.itemsProperty());
+		RootController.getModel().habilidadesProperty().bindBidirectional(conocimientosTable.itemsProperty());
 		
 		denominacionColumn.setCellValueFactory(v -> v.getValue().denominacionProperty());
 		nivelColumn.setCellValueFactory(v -> v.getValue().nivelProperty());
@@ -138,7 +134,7 @@ public class ConocimientosController implements Initializable {
 		return view;
 	}
 	
-	public final ObjectProperty<Conocimiento> seleccionadoProperty() {
+	public final ObjectProperty<Idioma> seleccionadoProperty() {
 		return this.seleccionado;
 	}
 
@@ -146,20 +142,8 @@ public class ConocimientosController implements Initializable {
 		return this.seleccionadoProperty().get();
 	}
 
-	public final void setSeleccionado(final Conocimiento seleccionado) {
+	public final void setSeleccionado(final Idioma seleccionado) {
 		this.seleccionadoProperty().set(seleccionado);
-	}
-
-	public final ListProperty<Conocimiento> conocimientosProperty() {
-		return this.conocimientos;
-	}
-
-	public final ObservableList<Conocimiento> getConocimientos() {
-		return this.conocimientosProperty().get();
-	}
-
-	public final void setConocimientos(final ObservableList<Conocimiento> conocimientos) {
-		this.conocimientosProperty().set(conocimientos);
 	}
 
 }

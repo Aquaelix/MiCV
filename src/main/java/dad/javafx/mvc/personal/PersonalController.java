@@ -5,12 +5,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import dad.javafx.mvc.RootController;
 import dad.javafx.mvc.model.Nacionalidad;
-import dad.javafx.mvc.model.Personal;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.SimpleListProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,8 +32,15 @@ import javafx.scene.layout.GridPane;
 
 public class PersonalController implements Initializable {
 
-	private Personal model = new Personal();
+	//model
+	
+	private ListProperty<String> paisList = new SimpleListProperty<String>(this, "paisList",
+			FXCollections.observableArrayList());
+	
+	private ListProperty<Nacionalidad> nacionalidadLista = new SimpleListProperty<Nacionalidad>(this, "nacionalidadLista",
+			FXCollections.observableArrayList());
 
+	
 	@FXML
 	private GridPane view;
 
@@ -72,15 +80,15 @@ public class PersonalController implements Initializable {
 	@FXML
 	void onAddNacionalidadAction(ActionEvent event) {
 
-		ChoiceDialog<Nacionalidad> dialog = new ChoiceDialog<Nacionalidad>(model.getNacionalidadList().get(0),
-				model.getNacionalidadList());
+		ChoiceDialog<Nacionalidad> dialog = new ChoiceDialog<Nacionalidad>(getNacionalidadLista().get(0),
+				getNacionalidadLista());
 		dialog.setTitle("Elige...");
 		dialog.setHeaderText("Seleccione una nacionalidad");
 		dialog.setContentText("Mi nacionalidad:");
 
 		Optional<Nacionalidad> result = dialog.showAndWait();
 		if (result.isPresent()) {
-			model.getNacionalidadListView().add(result.get());
+			RootController.getModel().getPersonal().getNacionalidadListView().add(result.get());
 		}
 
 	}
@@ -91,14 +99,14 @@ public class PersonalController implements Initializable {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmación");
 		alert.setHeaderText("¿Estás seguro?");
-		alert.setContentText("¿Desea realmente elimnar esta experiencia?");
+		alert.setContentText("¿Desea realmente eliminar esta nacionalidad?");
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
-			if (model.getNacionalidad() != null) {
-				model.getNacionalidadListView().remove(model.getNacionalidad());
-			} else if (model.getNacionalidadListView().size() != 0) {
-				model.getNacionalidadListView().remove(model.getNacionalidadListView().size() - 1);
+			if (RootController.getModel().getPersonal().getNacionalidad() != null) {
+				RootController.getModel().getPersonal().getNacionalidadListView().remove(RootController.getModel().getPersonal().getNacionalidad());
+			} else if (RootController.getModel().getPersonal().getNacionalidadListView().size() != 0) {
+				RootController.getModel().getPersonal().getNacionalidadListView().remove(RootController.getModel().getPersonal().getNacionalidadListView().size() - 1);
 			}
 			nacionalidadList.getSelectionModel().clearSelection();
 		}
@@ -106,22 +114,24 @@ public class PersonalController implements Initializable {
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
+		
+		
 
 		// bindeos
-		model.identificacionProperty().bindBidirectional(dniText.textProperty());
-		model.nombreProperty().bindBidirectional(nombreText.textProperty());
-		model.apellidosProperty().bindBidirectional(apellidosText.textProperty());
-		model.fechaNacimientoProperty().bindBidirectional(fechaNac.valueProperty());
-		model.direccionProperty().bindBidirectional(direccionArea.textProperty());
-		model.codigoPostalProperty().bindBidirectional(codPostalText.textProperty());
-		model.localidadProperty().bindBidirectional(localidadText.textProperty());
-		model.paisProperty().bindBidirectional(paisCombo.valueProperty());
-		model.nacionalidadProperty().bind(nacionalidadList.getSelectionModel().selectedItemProperty());
+		RootController.getModel().getPersonal().identificacionProperty().bindBidirectional(dniText.textProperty());
+		RootController.getModel().getPersonal().nombreProperty().bindBidirectional(nombreText.textProperty());
+		RootController.getModel().getPersonal().apellidosProperty().bindBidirectional(apellidosText.textProperty());
+		RootController.getModel().getPersonal().fechaNacimientoProperty().bindBidirectional(fechaNac.valueProperty());
+		RootController.getModel().getPersonal().direccionProperty().bindBidirectional(direccionArea.textProperty());
+		RootController.getModel().getPersonal().codigoPostalProperty().bindBidirectional(codPostalText.textProperty());
+		RootController.getModel().getPersonal().localidadProperty().bindBidirectional(localidadText.textProperty());
+		RootController.getModel().getPersonal().paisProperty().bindBidirectional(paisCombo.valueProperty());
+		RootController.getModel().getPersonal().nacionalidadProperty().bind(nacionalidadList.getSelectionModel().selectedItemProperty());
 
-		eliminarButton.disableProperty().bind(model.nacionalidadProperty().isNull());
+		eliminarButton.disableProperty().bind(RootController.getModel().getPersonal().nacionalidadProperty().isNull());
 
-		nacionalidadList.itemsProperty().bindBidirectional(model.nacionalidadListViewProperty());
-		paisCombo.itemsProperty().bind(model.paisListProperty());
+		nacionalidadList.itemsProperty().bindBidirectional(RootController.getModel().getPersonal().nacionalidadListViewProperty());
+		paisCombo.itemsProperty().bind(paisListProperty());
 
 		cargarPaises();
 		cargarNacionalidades();
@@ -151,11 +161,11 @@ public class PersonalController implements Initializable {
 				aux.setDenominacion(line);
 				items.add(aux);
 
-				System.out.println(line);
+				//System.out.println(line);
 				line = br.readLine();
 			}
 
-			model.setNacionalidadList(items);
+			setNacionalidadLista(items);
 
 		} catch (Exception e) {
 
@@ -204,11 +214,11 @@ public class PersonalController implements Initializable {
 					items.add(lines[i]);
 				}
 
-				System.out.println(Arrays.toString(lines));
+				//System.out.println(Arrays.toString(lines));
 				line = br.readLine();
 			}
 
-			model.setPaisList(items);
+			setPaisList(items);
 
 		} catch (Exception e) {
 
@@ -244,8 +254,35 @@ public class PersonalController implements Initializable {
 	public GridPane getView() {
 		return view;
 	}
-	
-	public Personal getModel() {
-		return model;
+
+	public final ListProperty<String> paisListProperty() {
+		return this.paisList;
 	}
+	
+
+	public final ObservableList<String> getPaisList() {
+		return this.paisListProperty().get();
+	}
+	
+
+	public final void setPaisList(final ObservableList<String> paisList) {
+		this.paisListProperty().set(paisList);
+	}
+	
+
+	public final ListProperty<Nacionalidad> nacionalidadListaProperty() {
+		return this.nacionalidadLista;
+	}
+	
+
+	public final ObservableList<Nacionalidad> getNacionalidadLista() {
+		return this.nacionalidadListaProperty().get();
+	}
+	
+
+	public final void setNacionalidadLista(final ObservableList<Nacionalidad> nacionalidadLista) {
+		this.nacionalidadListaProperty().set(nacionalidadLista);
+	}
+	
+	
 }

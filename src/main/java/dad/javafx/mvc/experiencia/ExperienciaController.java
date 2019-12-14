@@ -5,33 +5,30 @@ import java.time.LocalDate;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import dad.javafx.mvc.RootController;
 import dad.javafx.mvc.model.Experiencia;
 import dad.javafx.mvc.model.dialog.ExperienciaDialogController;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleListProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.HBox;
+import javafx.util.converter.LocalDateStringConverter;
 public class ExperienciaController implements Initializable{
 
 	//model
 	private ObjectProperty<Experiencia> seleccionada = new SimpleObjectProperty<Experiencia>();
-		
-	private ListProperty<Experiencia> experiencias = new SimpleListProperty<Experiencia>();	
 	
     @FXML
     private HBox view;
@@ -73,8 +70,10 @@ public class ExperienciaController implements Initializable{
 	    Optional<ButtonType> result = dialog.showAndWait();
 
 	    if (result.get() == okButton){			
-		    getExperiencias().add(experienciaView.getModel());
+	    	RootController.getModel().getExperiencias().add(experienciaView.getModel());
 		}
+	    
+	    
     }
 
     @FXML
@@ -83,14 +82,14 @@ public class ExperienciaController implements Initializable{
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle("Confirmación");
 		alert.setHeaderText("¿Estás seguro?");
-		alert.setContentText("¿Desea realmente elimnar esta experiencia?");
+		alert.setContentText("¿Desea realmente eliminar esta experiencia?");
 
 		Optional<ButtonType> result = alert.showAndWait();
 		if (result.get() == ButtonType.OK) {
 			if (getSeleccionada() != null) {
-				getExperiencias().remove(getSeleccionada());
-			} else if (getExperiencias().size() != 0) {
-				getExperiencias().remove(getExperiencias().size() - 1);
+				RootController.getModel().getExperiencias().remove(getSeleccionada());
+			} else if (RootController.getModel().getExperiencias().size() != 0) {
+				RootController.getModel().getExperiencias().remove(RootController.getModel().getExperiencias().size() - 1);
 			}
 			experienciasTable.getSelectionModel().clearSelection();
 		}
@@ -102,7 +101,7 @@ public class ExperienciaController implements Initializable{
 
 		seleccionadaProperty().bind(experienciasTable.getSelectionModel().selectedItemProperty());
 		
-		experienciaProperty().bindBidirectional(experienciasTable.itemsProperty());
+		RootController.getModel().experienciasProperty().bindBidirectional(experienciasTable.itemsProperty());
 		
 		desdeColumn.setCellValueFactory(v -> v.getValue().desdeProperty());
 		hastaColumn.setCellValueFactory(v -> v.getValue().hastaProperty());
@@ -110,8 +109,8 @@ public class ExperienciaController implements Initializable{
 		empleadorColumn.setCellValueFactory(v -> v.getValue().empleadorProperty());
 		
 		
-		/*desdeColumn.setCellFactory(dateCellFactory);
-		hastaColumn.setCellFactory(dateCellFactory);*/
+		desdeColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
+		hastaColumn.setCellFactory(TextFieldTableCell.forTableColumn(new LocalDateStringConverter()));
 		denominadorColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 		empleadorColumn.setCellFactory(TextFieldTableCell.forTableColumn());
 	}
@@ -138,21 +137,6 @@ public class ExperienciaController implements Initializable{
 
 	public final void setSeleccionada(final Experiencia seleccionada) {
 		this.seleccionadaProperty().set(seleccionada);
-	}
-	
-
-	public final ListProperty<Experiencia> experienciaProperty() {
-		return this.experiencias;
-	}
-	
-
-	public final ObservableList<Experiencia> getExperiencias() {
-		return this.experienciaProperty().get();
-	}
-	
-
-	public final void setExperiencias(final ObservableList<Experiencia> experiencia) {
-		this.experienciaProperty().set(experiencia);
 	}
 	
 }
